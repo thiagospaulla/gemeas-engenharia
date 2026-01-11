@@ -421,8 +421,8 @@ export default function HomePage() {
               <h3 className="mb-6 text-xl font-semibold text-[#C9A574]">Contato</h3>
               <ul className="space-y-3 text-gray-400">
                 <li>📧 contato@gemeas.com.br</li>
-                <li>📱 (11) 99999-9999</li>
-                <li>📍 São Paulo - SP</li>
+                <li>📱 (34) 99999-9999</li>
+                <li>📍 Uberlândia - MG</li>
                 <li>🕐 Seg-Sex: 8h às 18h</li>
               </ul>
             </div>
@@ -431,7 +431,7 @@ export default function HomePage() {
           <div className="mt-12 border-t border-gray-700 pt-8">
             <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
               <p className="text-gray-400">
-                &copy; 2024 Gêmeas Engenharia. Todos os direitos reservados.
+                &copy; 2025 Gêmeas Engenharia. Todos os direitos reservados.
               </p>
               <div className="flex gap-6">
                 <Button
