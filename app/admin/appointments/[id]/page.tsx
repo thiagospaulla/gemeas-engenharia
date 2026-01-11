@@ -228,8 +228,8 @@ export default function ViewAppointmentPage({ params }: { params: Promise<{ id: 
                       </div>
                     </div>
                   </div>
-                </Card>
-              )}
+                </CardContent>
+              </Card>
 
               {/* Location */}
               {appointment.location && (
