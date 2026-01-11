@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #C9A574;
+  --primary-dark: #B89564;
+  --dark-bg: #2C3E50;
+  --dark-secondary: #34495E;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-dark-bg: var(--dark-bg);
+  --color-dark-secondary: var(--dark-secondary);
+}
+
+body {
+  @apply bg-gray-50 text-gray-900;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+/* Estilos para impressão */
+@media print {
+  /* Esconder elementos não necessários na impressão */
+  .no-print,
+  aside,
+  header,
+  nav,
+  .sidebar {
+    display: none !important;
+  }
+
+  /* Ajustar layout para impressão */
+  body {
+    margin: 0;
+    padding: 0;
+    background: white !important;
+  }
+
+  /* Remover margem lateral do conteúdo principal */
+  .ml-64 {
+    margin-left: 0 !important;
+  }
+
+  /* Melhorar a visualização de tabelas */
+  table {
+    page-break-inside: avoid;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  /* Evitar quebra de página em elementos importantes */
+  .card,
+  .budget-item {
+    page-break-inside: avoid;
+  }
+
+  /* Ajustar cores para impressão */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Melhorar contraste de badges */
+  .badge {
+    border: 1px solid #333 !important;
+  }
+
+  /* Cabeçalho do orçamento para impressão */
+  .print-header {
+    display: block !important;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #C9A574;
+  }
+
+  /* Rodapé para impressão */
+  .print-footer {
+    display: block !important;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ddd;
+    font-size: 0.875rem;
+    color: #666;
+  }
+
+  /* Ajustar tamanho de fonte */
+  body {
+    font-size: 12pt;
+  }
+
+  h1 {
+    font-size: 24pt;
+    margin-bottom: 0.5rem;
+  }
+
+  h2, h3 {
+    font-size: 16pt;
+  }
+
+  /* Evitar quebras de página indesejadas */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+
+  /* Margens da página */
+  @page {
+    margin: 2cm;
+  }
+}
+
+/* Estilos para impressão e exportação de orçamentos */
+@media print {
+  .no-print, aside, header, nav, .sidebar {
+    display: none !important;
+  }
+  body { margin: 0; padding: 0; background: white !important; }
+  .ml-64 { margin-left: 0 !important; }
+  table { page-break-inside: avoid; border-collapse: collapse; width: 100%; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  @page { margin: 2cm; size: A4; }
+}

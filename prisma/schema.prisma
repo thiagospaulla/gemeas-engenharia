@@ -1,0 +1,389 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  CLIENT
+}
+
+enum ProjectStatus {
+  ORCAMENTO
+  EM_ANDAMENTO
+  PAUSADO
+  CONCLUIDO
+  CANCELADO
+}
+
+enum ProjectPhase {
+  PLANEJAMENTO
+  FUNDACAO
+  ESTRUTURA
+  ALVENARIA
+  INSTALACOES
+  ACABAMENTO
+  FINALIZACAO
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String
+  role          UserRole  @default(CLIENT)
+  active        Boolean   @default(false) // Apenas admin pode ativar
+  phone         String?
+  cpf           String?   @unique
+  cnpj          String?   @unique
+  address       String?
+  complement    String?   // Complemento do endereço
+  city          String?
+  state         String?
+  zipCode       String?
+  avatar        String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relacionamentos
+  projects         Project[]
+  userDocuments    Document[]     @relation("UserDocuments")
+  uploadedDocuments Document[]    @relation("UploadedDocuments")
+  notifications    Notification[]
+  budgets          Budget[]
+  invoices         Invoice[]
+  appointments     Appointment[]
+  
+  @@map("users")
+}
+
+model Project {
+  id              String        @id @default(cuid())
+  title           String
+  description     String?
+  type            String        // Residencial, Comercial, Industrial
+  status          ProjectStatus @default(ORCAMENTO)
+  currentPhase    ProjectPhase?
+  startDate       DateTime?
+  endDate         DateTime?
+  estimatedBudget Float?
+  actualBudget    Float?
+  progress        Int           @default(0) // 0-100
+  address         String?
+  complement      String?       // Complemento do endereço
+  city            String?
+  state           String?
+  zipCode         String?       // CEP
+  area            Float?        // área em m²
+  propertyCodes   String[]      // Códigos de matrícula do imóvel
+  thumbnail       String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  // Relacionamentos
+  clientId        String
+  client          User          @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  documents       Document[]
+  workDiaries     WorkDiary[]
+  phases          ProjectPhaseDetail[]
+  reports         Report[]
+  budget          Budget?
+  invoices        Invoice[]
+  appointments    Appointment[]
+  teamMembers     ProjectTeamMember[]
+  
+  @@map("projects")
+}
+
+model Document {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  fileName    String
+  fileUrl     String
+  fileSize    Int
+  fileType    String
+  category    String   // Contrato, Planta, Laudo, Licença, Certidão, RG, CPF, etc
+  tags        String[] // Tags para busca e organização
+  uploadedAt  DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relacionamentos opcionais - documento pode estar vinculado a múltiplas entidades
+  projectId    String?
+  project      Project?     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  userId       String?      // Documento pessoal do usuário (RG, CPF, etc)
+  user         User?        @relation("UserDocuments", fields: [userId], references: [id], onDelete: Cascade)
+  
+  budgetId     String?      // Documento do orçamento
+  budget       Budget?      @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+  
+  teamMemberId String?      // Documento do membro da equipe
+  teamMember   TeamMember?  @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+  
+  uploadedById String
+  uploadedBy   User         @relation("UploadedDocuments", fields: [uploadedById], references: [id])
+  
+  @@map("documents")
+}
+
+model WorkDiary {
+  id              String   @id @default(cuid())
+  date            DateTime @default(now())
+  weather         String?
+  temperature     String?
+  workersPresent  Int?
+  activities      String   @db.Text
+  materials       String?  @db.Text
+  equipment       String?  @db.Text
+  observations    String?  @db.Text
+  photos          String[] // URLs das fotos
+  aiSummary       String?  @db.Text // Resumo gerado por IA
+  aiInsights      String?  @db.Text // Insights gerados por IA
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relacionamentos
+  projectId       String
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@map("work_diaries")
+}
+
+model ProjectPhaseDetail {
+  id          String       @id @default(cuid())
+  phase       ProjectPhase
+  name        String
+  description String?
+  status      String       @default("pending") // pending, in_progress, completed
+  startDate   DateTime?
+  endDate     DateTime?
+  progress    Int          @default(0)
+  budget      Float?
+  actualCost  Float?
+  notes       String?      @db.Text
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  
+  // Relacionamentos
+  projectId   String
+  project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@map("project_phases")
+}
+
+model Report {
+  id          String   @id @default(cuid())
+  title       String
+  type        String   // Gerencial, Financeiro, Técnico, Progresso
+  content     String   @db.Text
+  data        String?  @db.Text // JSON com dados estruturados
+  period      String?  // Mensal, Trimestral, Anual
+  generatedAt DateTime @default(now())
+  
+  // Relacionamentos
+  projectId   String?
+  project     Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@map("reports")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  title     String
+  message   String
+  type      String   // info, warning, success, error
+  read      Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+  
+  // Relacionamentos
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("notifications")
+}
+
+enum BudgetStatus {
+  RASCUNHO
+  ENVIADO
+  APROVADO
+  REJEITADO
+  EXPIRADO
+}
+
+model Budget {
+  id              String       @id @default(cuid())
+  title           String
+  description     String?      @db.Text
+  type            String       // Residencial, Comercial, Industrial
+  status          BudgetStatus @default(RASCUNHO)
+  totalValue      Float
+  validUntil      DateTime
+  items           BudgetItem[]
+  notes           String?      @db.Text
+  attachments     String[]     // URLs dos anexos
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  
+  // Relacionamentos
+  clientId        String
+  client          User         @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  projectId       String?      @unique
+  project         Project?     @relation(fields: [projectId], references: [id])
+  documents       Document[]
+  
+  @@map("budgets")
+}
+
+model BudgetItem {
+  id          String   @id @default(cuid())
+  description String
+  quantity    Float
+  unit        String   // m², m³, unidade, hora, etc
+  unitPrice   Float
+  totalPrice  Float
+  category    String?  // Material, Mão de obra, Equipamento, etc
+  
+  // Relacionamentos
+  budgetId    String
+  budget      Budget   @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+  
+  @@map("budget_items")
+}
+
+enum InvoiceStatus {
+  PENDENTE
+  PAGO
+  ATRASADO
+  CANCELADO
+}
+
+model Invoice {
+  id            String        @id @default(cuid())
+  invoiceNumber String        @unique
+  description   String?
+  amount        Float
+  status        InvoiceStatus @default(PENDENTE)
+  issueDate     DateTime      @default(now())
+  dueDate       DateTime
+  paidDate      DateTime?
+  paymentMethod String?       // Dinheiro, PIX, Transferência, Cartão
+  notes         String?       @db.Text
+  attachments   String[]      // URLs das notas fiscais
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  // Relacionamentos
+  clientId      String
+  client        User          @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  projectId     String?
+  project       Project?      @relation(fields: [projectId], references: [id])
+  
+  @@map("invoices")
+}
+
+enum AppointmentStatus {
+  AGENDADO
+  CONFIRMADO
+  CONCLUIDO
+  CANCELADO
+}
+
+model Appointment {
+  id          String            @id @default(cuid())
+  title       String
+  description String?           @db.Text
+  type        String            // Reunião, Visita, Vistoria, Entrega
+  status      AppointmentStatus @default(AGENDADO)
+  startTime   DateTime
+  endTime     DateTime
+  location    String?
+  notes       String?           @db.Text
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  
+  // Relacionamentos
+  clientId    String
+  client      User              @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  projectId   String?
+  project     Project?          @relation(fields: [projectId], references: [id])
+  
+  @@map("appointments")
+}
+
+enum TeamMemberRole {
+  ENGENHEIRO
+  ARQUITETO
+  MESTRE_OBRAS
+  PEDREIRO
+  ELETRICISTA
+  ENCANADOR
+  PINTOR
+  CARPINTEIRO
+  SERVENTE
+  OUTRO
+}
+
+enum TeamMemberStatus {
+  ATIVO
+  INATIVO
+  FERIAS
+  AFASTADO
+}
+
+model TeamMember {
+  id              String           @id @default(cuid())
+  name            String
+  email           String?          @unique
+  phone           String
+  cpf             String           @unique
+  role            TeamMemberRole
+  status          TeamMemberStatus @default(ATIVO)
+  specialization  String?          // Especialização ou habilidades específicas
+  hourlyRate      Float?           // Valor por hora
+  dailyRate       Float?           // Valor por dia
+  hireDate        DateTime
+  birthDate       DateTime?
+  address         String?
+  city            String?
+  state           String?
+  zipCode         String?
+  emergencyContact String?         // Contato de emergência
+  emergencyPhone   String?
+  certifications  String[]         // Certificações profissionais
+  notes           String?          @db.Text
+  avatar          String?
+  active          Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  
+  // Relacionamentos
+  projectAssignments ProjectTeamMember[]
+  documents          Document[]
+  
+  @@map("team_members")
+}
+
+model ProjectTeamMember {
+  id            String      @id @default(cuid())
+  startDate     DateTime
+  endDate       DateTime?
+  role          String      // Função específica no projeto
+  notes         String?     @db.Text
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  // Relacionamentos
+  projectId     String
+  project       Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  teamMemberId  String
+  teamMember    TeamMember  @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+  
+  @@unique([projectId, teamMemberId])
+  @@map("project_team_members")
+}
