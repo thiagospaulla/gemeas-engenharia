@@ -2,181 +2,264 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Building2, Users, Award, ArrowRight, CheckCircle, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react'
+import { 
+  Building2, Users, Award, ArrowRight, CheckCircle, ChevronLeft, ChevronRight, 
+  Sparkles, Target, TrendingUp, Shield, Clock, Phone, Mail, MapPin,
+  FileText, Briefcase, Settings, Zap, Star, MessageCircle
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 
 const projects = [
   {
-    title: 'Edifício AHAVA',
-    description: 'Complexo comercial premium com design contemporâneo',
-    gradient: 'from-amber-100 via-[#C9A574] to-amber-800',
-    features: ['4 andares', 'Vista panorâmica', 'Acabamento premium']
+    title: 'EDIFÍCIO AHAVA',
+    subtitle: 'Complexo Comercial Premium',
+    description: 'Projeto comercial de alto padrão com design contemporâneo e acabamento superior',
+    gradient: 'from-amber-50 via-amber-200 to-amber-400',
+    overlay: 'from-amber-900/60 to-transparent',
+    specs: ['1.500m²', '4 Pavimentos', 'Acabamento Premium', 'Vista Panorâmica'],
+    type: 'Comercial'
   },
   {
-    title: 'Espaço Revolução',
-    description: 'Centro corporativo com tecnologia e sustentabilidade',
-    gradient: 'from-slate-700 via-slate-900 to-black',
-    features: ['Design inovador', 'Infraestrutura completa', 'Localização privilegiada']
+    title: 'ESPAÇO REVOLUÇÃO',
+    subtitle: 'Centro Corporativo Sustentável',
+    description: 'Empreendimento corporativo com tecnologia de ponta e certificação ambiental',
+    gradient: 'from-slate-600 via-slate-800 to-slate-950',
+    overlay: 'from-slate-900/70 to-transparent',
+    specs: ['2.800m²', 'Certificação LEED', 'Smart Building', 'Heliporto'],
+    type: 'Corporativo'
   },
   {
-    title: 'Galeria Comercial',
-    description: 'Empreendimento comercial multiuso',
-    gradient: 'from-stone-300 via-stone-500 to-stone-700',
-    features: ['Lojas modernas', 'Estacionamento amplo', 'Área verde']
+    title: 'GALERIA COMERCIAL',
+    subtitle: 'Complexo Multiuso',
+    description: 'Desenvolvimento comercial integrado com lojas, escritórios e área de lazer',
+    gradient: 'from-stone-200 via-stone-400 to-stone-600',
+    overlay: 'from-stone-900/60 to-transparent',
+    specs: ['3.200m²', '24 Lojas', 'Estacionamento 150 vagas', 'Praça Central'],
+    type: 'Comercial'
   },
   {
-    title: 'Residência de Luxo',
-    description: 'Projeto residencial exclusivo e sofisticado',
-    gradient: 'from-amber-200 via-amber-400 to-amber-600',
-    features: ['3 suítes', 'Área gourmet', 'Piscina e jardim']
+    title: 'RESIDÊNCIA DE LUXO',
+    subtitle: 'Casa de Alto Padrão',
+    description: 'Projeto residencial exclusivo com arquitetura moderna e conforto superior',
+    gradient: 'from-amber-100 via-amber-300 to-amber-500',
+    overlay: 'from-amber-900/50 to-transparent',
+    specs: ['450m²', '4 Suítes', 'Piscina Infinita', 'Automação Completa'],
+    type: 'Residencial'
+  }
+]
+
+const testimonials = [
+  {
+    name: 'Carlos Mendes',
+    role: 'Empresário',
+    text: 'A Gêmeas transformou minha visão em realidade. Profissionalismo e qualidade incomparáveis.',
+    rating: 5
+  },
+  {
+    name: 'Ana Paula Silva',
+    role: 'Investidora',
+    text: 'Transparência total durante todo o processo. Sistema de acompanhamento é excelente!',
+    rating: 5
+  },
+  {
+    name: 'Roberto Costa',
+    role: 'Proprietário',
+    text: 'Entregaram minha casa dos sonhos dentro do prazo e orçamento. Recomendo!',
+    rating: 5
   }
 ]
 
 export default function HomePage() {
   const router = useRouter()
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [isVisible, setIsVisible] = useState(false)
 
-  // Auto-advance carousel
   useEffect(() => {
+    setIsVisible(true)
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % projects.length)
-    }, 5000)
+    }, 6000)
     return () => clearInterval(timer)
   }, [])
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % projects.length)
-  }
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + projects.length) % projects.length)
-  }
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % projects.length)
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + projects.length) % projects.length)
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#2C3E50] to-[#1a252f]">
+    <div className="min-h-screen bg-white">
+      {/* Top Bar */}
+      <div className="bg-[#2C3E50] py-3">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-white">
+            <div className="flex gap-6">
+              <span className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-[#C9A574]" />
+                (11) 99999-9999
+              </span>
+              <span className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-[#C9A574]" />
+                contato@gemeas.com.br
+              </span>
+            </div>
+            <div className="flex gap-4">
+              <Button
+                size="sm"
+                onClick={() => router.push('/login')}
+                className="bg-transparent hover:bg-white/10"
+              >
+                Login
+              </Button>
+              <Button
+                size="sm"
+                onClick={() => router.push('/register')}
+                className="bg-[#C9A574] hover:bg-[#B8956A]"
+              >
+                Criar Conta
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Animated Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `repeating-linear-gradient(
-              45deg,
-              transparent,
-              transparent 35px,
-              rgba(201, 165, 116, 0.1) 35px,
-              rgba(201, 165, 116, 0.1) 70px
-            )`
-          }} />
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#2C3E50] via-[#34495E] to-[#2C3E50]">
+        {/* Animated Background */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMSIgZmlsbD0icmdiYSgyMDEsMTY1LDExNiwwLjIpIi8+PC9zdmc+')] opacity-40" />
+          <div className="absolute top-0 right-0 h-96 w-96 bg-[#C9A574]/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-0 left-0 h-96 w-96 bg-[#C9A574]/10 rounded-full blur-3xl animate-pulse delay-700" />
         </div>
         
-        <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
-          {/* Logo with Animation */}
-          <div className="mb-8 flex items-center justify-center gap-4 animate-fade-in">
+        <div className={`relative z-10 mx-auto max-w-7xl px-6 text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          {/* Logo Premium */}
+          <div className="mb-10 flex items-center justify-center gap-4">
             <div className="relative">
-              <Building2 className="h-20 w-20 text-[#C9A574] animate-pulse" />
-              <Sparkles className="absolute -top-2 -right-2 h-6 w-6 text-yellow-400 animate-bounce" />
+              <Building2 className="h-24 w-24 text-[#C9A574] drop-shadow-2xl" />
+              <Sparkles className="absolute -top-3 -right-3 h-8 w-8 text-yellow-300 animate-pulse" />
+              <Sparkles className="absolute -bottom-2 -left-2 h-6 w-6 text-yellow-200 animate-pulse delay-500" />
             </div>
-            <h1 className="text-6xl font-bold text-white">
-              GÊMEAS
-              <span className="block text-5xl bg-gradient-to-r from-[#C9A574] to-[#E8D5B7] bg-clip-text text-transparent">
+            <div>
+              <h1 className="text-7xl font-black tracking-tight text-white drop-shadow-2xl">
+                GÊMEAS
+              </h1>
+              <p className="text-3xl font-light tracking-widest bg-gradient-to-r from-[#C9A574] via-[#E8D5B7] to-[#C9A574] bg-clip-text text-transparent">
                 ENGENHARIA
-              </span>
-            </h1>
+              </p>
+            </div>
           </div>
 
           {/* Tagline */}
-          <p className="mb-4 text-3xl font-light text-gray-300">
-            Transformando ideias em
-          </p>
-          <p className="mb-12 text-4xl font-bold bg-gradient-to-r from-[#C9A574] to-[#E8D5B7] bg-clip-text text-transparent">
+          <h2 className="mb-6 text-4xl font-light text-gray-200 leading-relaxed">
+            Transformando <span className="font-bold text-[#C9A574]">Visões</span> em
+          </h2>
+          <h2 className="mb-12 text-5xl font-bold bg-gradient-to-r from-white via-[#E8D5B7] to-[#C9A574] bg-clip-text text-transparent">
             Obras de Excelência
+          </h2>
+
+          <p className="mx-auto mb-12 max-w-3xl text-xl text-gray-300 leading-relaxed">
+            Há mais de 15 anos entregando projetos de engenharia civil com qualidade superior, 
+            inovação tecnológica e compromisso total com nossos clientes.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          {/* CTAs Premium */}
+          <div className="flex flex-col items-center justify-center gap-6 sm:flex-row mb-16">
             <Button
               onClick={() => router.push('/login')}
-              className="group w-72 bg-gradient-to-r from-[#C9A574] to-[#B8956A] py-7 text-xl font-semibold shadow-2xl hover:shadow-[#C9A574]/50 transition-all hover:scale-105"
+              className="group w-80 bg-gradient-to-r from-[#C9A574] via-[#D4B17E] to-[#C9A574] py-8 text-xl font-bold shadow-2xl hover:shadow-[#C9A574]/50 transition-all hover:scale-110 animate-pulse hover:animate-none"
             >
-              Acessar Sistema
-              <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+              <Zap className="mr-2 h-6 w-6 group-hover:rotate-12 transition-transform" />
+              Acessar Plataforma
+              <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-2 transition-transform" />
             </Button>
             <Button
               onClick={() => router.push('/register')}
-              className="w-72 border-2 border-[#C9A574] bg-transparent py-7 text-xl font-semibold text-white hover:bg-[#C9A574]/20 transition-all hover:scale-105"
+              className="w-80 border-3 border-white bg-white/10 backdrop-blur-sm py-8 text-xl font-bold text-white hover:bg-white hover:text-[#2C3E50] transition-all hover:scale-110"
             >
+              <Star className="mr-2 h-6 w-6" />
               Criar Conta Grátis
             </Button>
           </div>
 
-          {/* Stats */}
-          <div className="mt-24 grid gap-8 md:grid-cols-4">
+          {/* Stats Grid */}
+          <div className="grid gap-8 md:grid-cols-4">
             {[
-              { value: '15+', label: 'Anos de Experiência' },
-              { value: '200+', label: 'Projetos Concluídos' },
-              { value: '50+', label: 'Clientes Satisfeitos' },
-              { value: '100%', label: 'Compromisso' }
+              { value: '15+', label: 'Anos de', sublabel: 'Experiência', icon: Award },
+              { value: '200+', label: 'Projetos', sublabel: 'Concluídos', icon: Building2 },
+              { value: '50+', label: 'Clientes', sublabel: 'Satisfeitos', icon: Users },
+              { value: '98%', label: 'Taxa de', sublabel: 'Aprovação', icon: Target }
             ].map((stat, index) => (
-              <div key={index} className="text-center transform hover:scale-110 transition-transform">
-                <p className="text-6xl font-bold bg-gradient-to-r from-[#C9A574] to-[#E8D5B7] bg-clip-text text-transparent">
+              <div key={index} className="group text-center transform hover:scale-110 transition-all">
+                <stat.icon className="h-12 w-12 mx-auto mb-3 text-[#C9A574] group-hover:rotate-12 transition-transform" />
+                <p className="text-6xl font-black bg-gradient-to-r from-[#C9A574] to-[#E8D5B7] bg-clip-text text-transparent">
                   {stat.value}
                 </p>
-                <p className="mt-2 text-gray-300">{stat.label}</p>
+                <p className="mt-2 text-white font-medium">{stat.label}</p>
+                <p className="text-gray-400">{stat.sublabel}</p>
               </div>
             ))}
           </div>
         </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="h-14 w-10 rounded-full border-2 border-[#C9A574] p-2">
-            <div className="h-3 w-3 mx-auto rounded-full bg-[#C9A574] animate-pulse" />
-          </div>
-        </div>
       </section>
 
-      {/* Projects Carousel Section */}
+      {/* Projects Carousel */}
       <section className="bg-gradient-to-b from-white to-gray-50 py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-16 text-center">
-            <h2 className="mb-4 text-5xl font-bold text-[#2C3E50]">
-              Nossos Projetos
+            <span className="inline-block px-4 py-2 rounded-full bg-[#C9A574]/10 text-[#C9A574] font-semibold mb-4">
+              PORTFÓLIO
+            </span>
+            <h2 className="mb-4 text-5xl font-black text-[#2C3E50]">
+              Projetos que Inspiram
             </h2>
-            <p className="text-xl text-gray-600">
-              Excelência em cada detalhe
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Conheça alguns dos empreendimentos que desenvolvemos com excelência e dedicação
             </p>
           </div>
 
           {/* Carousel */}
           <div className="relative">
-            {/* Carousel Container */}
-            <div className="overflow-hidden rounded-2xl shadow-2xl">
+            <div className="overflow-hidden rounded-3xl shadow-2xl">
               <div 
                 className="flex transition-transform duration-700 ease-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
                 {projects.map((project, index) => (
                   <div key={index} className="w-full flex-shrink-0">
-                    <div className={`relative h-96 bg-gradient-to-br ${project.gradient} flex items-center justify-center`}>
-                      {/* Project Content */}
-                      <div className="absolute inset-0 bg-black/40" />
-                      <div className="relative z-10 text-center text-white px-6">
-                        <Building2 className="h-24 w-24 mx-auto mb-6 drop-shadow-2xl" />
-                        <h3 className="text-4xl font-bold mb-4 drop-shadow-lg">
+                    <div className={`relative h-[500px] bg-gradient-to-br ${project.gradient} flex items-center justify-center overflow-hidden`}>
+                      {/* Background Pattern */}
+                      <div className="absolute inset-0 opacity-20">
+                        <Building2 className="absolute top-10 right-10 h-32 w-32 text-white/30" />
+                        <Building2 className="absolute bottom-10 left-10 h-24 w-24 text-white/20" />
+                      </div>
+
+                      {/* Gradient Overlay */}
+                      <div className={`absolute inset-0 bg-gradient-to-t ${project.overlay}`} />
+                      
+                      {/* Content */}
+                      <div className="relative z-10 text-center text-white px-8 max-w-4xl">
+                        <span className="inline-block px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm text-sm font-semibold mb-4">
+                          {project.type}
+                        </span>
+                        <h3 className="text-5xl font-black mb-4 drop-shadow-2xl tracking-tight">
                           {project.title}
                         </h3>
-                        <p className="text-xl mb-6 drop-shadow-lg">
+                        <p className="text-2xl font-medium mb-4 text-white/90 drop-shadow-lg">
+                          {project.subtitle}
+                        </p>
+                        <p className="text-lg mb-8 text-white/80 max-w-2xl mx-auto drop-shadow-lg">
                           {project.description}
                         </p>
-                        <div className="flex flex-wrap gap-3 justify-center">
-                          {project.features.map((feature, idx) => (
-                            <span 
+                        
+                        {/* Specs */}
+                        <div className="flex flex-wrap gap-4 justify-center">
+                          {project.specs.map((spec, idx) => (
+                            <div 
                               key={idx}
-                              className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium"
+                              className="px-6 py-3 bg-white/20 backdrop-blur-md rounded-xl border border-white/30 font-medium shadow-lg"
                             >
-                              {feature}
-                            </span>
+                              {spec}
+                            </div>
                           ))}
                         </div>
                       </div>
@@ -186,30 +269,30 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Navigation Buttons */}
+            {/* Navigation */}
             <button
               onClick={prevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-xl hover:bg-white transition-all hover:scale-110"
+              className="absolute left-6 top-1/2 -translate-y-1/2 rounded-full bg-white p-4 shadow-2xl hover:bg-[#C9A574] hover:text-white transition-all hover:scale-125"
             >
-              <ChevronLeft className="h-6 w-6 text-[#2C3E50]" />
+              <ChevronLeft className="h-8 w-8" />
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-xl hover:bg-white transition-all hover:scale-110"
+              className="absolute right-6 top-1/2 -translate-y-1/2 rounded-full bg-white p-4 shadow-2xl hover:bg-[#C9A574] hover:text-white transition-all hover:scale-125"
             >
-              <ChevronRight className="h-6 w-6 text-[#2C3E50]" />
+              <ChevronRight className="h-8 w-8" />
             </button>
 
             {/* Indicators */}
-            <div className="mt-6 flex justify-center gap-2">
+            <div className="mt-8 flex justify-center gap-3">
               {projects.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
-                  className={`h-3 rounded-full transition-all ${
+                  className={`h-4 rounded-full transition-all ${
                     index === currentSlide 
-                      ? 'w-12 bg-[#C9A574]' 
-                      : 'w-3 bg-gray-300 hover:bg-gray-400'
+                      ? 'w-16 bg-[#C9A574] shadow-lg' 
+                      : 'w-4 bg-gray-300 hover:bg-gray-400'
                   }`}
                 />
               ))}
@@ -218,43 +301,52 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* Why Choose Us */}
       <section className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-16 text-center">
-            <h2 className="mb-4 text-5xl font-bold text-[#2C3E50]">
-              Por que escolher a Gêmeas?
+            <span className="inline-block px-4 py-2 rounded-full bg-[#C9A574]/10 text-[#C9A574] font-semibold mb-4">
+              DIFERENCIAIS
+            </span>
+            <h2 className="mb-6 text-5xl font-black text-[#2C3E50]">
+              Por que somos a melhor escolha?
             </h2>
             <p className="mx-auto max-w-3xl text-xl text-gray-600">
-              Somos referência em engenharia civil, unindo tradição e inovação
+              Combinamos experiência, tecnologia e dedicação para entregar resultados excepcionais
             </p>
           </div>
 
           <div className="grid gap-8 md:grid-cols-3">
             {[
               {
-                icon: Building2,
+                icon: Sparkles,
                 title: 'Projetos Inovadores',
-                description: 'Soluções arquitetônicas modernas e funcionais, adaptadas às suas necessidades'
+                description: 'Design contemporâneo aliado à funcionalidade. Cada projeto é único e pensado nos mínimos detalhes.',
+                color: 'from-blue-500 to-blue-700'
               },
               {
                 icon: Users,
-                title: 'Equipe Especializada',
-                description: 'Profissionais qualificados com anos de experiência no mercado'
+                title: 'Equipe de Elite',
+                description: 'Engenheiros, arquitetos e mestres de obras certificados com anos de experiência comprovada.',
+                color: 'from-purple-500 to-purple-700'
               },
               {
-                icon: Award,
-                title: 'Excelência Garantida',
-                description: 'Compromisso com qualidade, prazos e total transparência'
+                icon: Shield,
+                title: 'Garantia de Qualidade',
+                description: 'Compromisso com prazos, transparência total e suporte durante e após a entrega.',
+                color: 'from-green-500 to-green-700'
               }
             ].map((item, index) => (
               <Card 
                 key={index} 
-                className="group p-8 text-center hover:shadow-2xl transition-all hover:-translate-y-2 border-2 border-transparent hover:border-[#C9A574]"
+                className="group relative overflow-hidden p-8 text-center hover:shadow-2xl transition-all hover:-translate-y-4 border-0"
               >
+                {/* Gradient Bar */}
+                <div className={`absolute top-0 left-0 right-0 h-2 bg-gradient-to-r ${item.color}`} />
+                
                 <div className="mb-6 flex justify-center">
-                  <div className="rounded-full bg-gradient-to-br from-[#C9A574] to-[#B8956A] p-6 group-hover:scale-110 transition-transform">
-                    <item.icon className="h-12 w-12 text-white" />
+                  <div className={`rounded-2xl bg-gradient-to-br ${item.color} p-6 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all`}>
+                    <item.icon className="h-14 w-14 text-white" />
                   </div>
                 </div>
                 <h3 className="mb-4 text-2xl font-bold text-[#2C3E50]">
@@ -273,44 +365,183 @@ export default function HomePage() {
       <section className="bg-gradient-to-b from-gray-50 to-white py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-16 text-center">
-            <h2 className="mb-4 text-5xl font-bold text-[#2C3E50]">
-              Nossos Serviços
+            <span className="inline-block px-4 py-2 rounded-full bg-[#C9A574]/10 text-[#C9A574] font-semibold mb-4">
+              SERVIÇOS
+            </span>
+            <h2 className="mb-6 text-5xl font-black text-[#2C3E50]">
+              Soluções Completas
             </h2>
             <p className="text-xl text-gray-600">
-              Soluções completas em engenharia civil
+              Do planejamento à entrega, cuidamos de cada detalhe
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
               {
-                title: 'Projetos Arquitetônicos',
-                description: 'Desenvolvimento completo de projetos residenciais, comerciais e industriais'
+                icon: FileText,
+                title: 'Projetos',
+                items: ['Arquitetônicos', 'Estruturais', 'Elétricos', 'Hidráulicos']
               },
               {
-                title: 'Gestão de Obras',
-                description: 'Acompanhamento integral desde o planejamento até a entrega final'
+                icon: Briefcase,
+                title: 'Gestão',
+                items: ['Obras', 'Equipes', 'Prazos', 'Orçamentos']
               },
               {
-                title: 'Consultoria Técnica',
-                description: 'Assessoria especializada para viabilidade e execução de projetos'
+                icon: Settings,
+                title: 'Consultoria',
+                items: ['Técnica', 'Viabilidade', 'Aprovações', 'Regularização']
               },
               {
-                title: 'Regularização de Obras',
-                description: 'Suporte completo para licenças, alvarás e toda documentação necessária'
+                icon: TrendingUp,
+                title: 'Acompanhamento',
+                items: ['Tempo Real', 'Relatórios', 'Fotos', 'Métricas']
               }
             ].map((service, index) => (
+              <Card 
+                key={index}
+                className="group p-6 hover:shadow-xl transition-all hover:-translate-y-2 border-2 border-transparent hover:border-[#C9A574]"
+              >
+                <div className="mb-4 flex justify-center">
+                  <div className="rounded-xl bg-[#C9A574] p-4 group-hover:bg-gradient-to-br group-hover:from-[#C9A574] group-hover:to-[#B8956A] transition-all">
+                    <service.icon className="h-8 w-8 text-white" />
+                  </div>
+                </div>
+                <h3 className="mb-4 text-xl font-bold text-[#2C3E50] text-center">
+                  {service.title}
+                </h3>
+                <ul className="space-y-2">
+                  {service.items.map((item, idx) => (
+                    <li key={idx} className="flex items-center gap-2 text-gray-600">
+                      <CheckCircle className="h-4 w-4 text-[#C9A574] flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section className="bg-white py-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mb-16 text-center">
+            <span className="inline-block px-4 py-2 rounded-full bg-[#C9A574]/10 text-[#C9A574] font-semibold mb-4">
+              NOSSO PROCESSO
+            </span>
+            <h2 className="mb-6 text-5xl font-black text-[#2C3E50]">
+              Como Trabalhamos
+            </h2>
+            <p className="text-xl text-gray-600">
+              Metodologia comprovada em 4 etapas simples
+            </p>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-4">
+            {[
+              { number: '01', title: 'Planejamento', desc: 'Análise detalhada das necessidades e proposta personalizada' },
+              { number: '02', title: 'Execução', desc: 'Obra realizada com qualidade e acompanhamento constante' },
+              { number: '03', title: 'Controle', desc: 'Monitoramento em tempo real através da plataforma digital' },
+              { number: '04', title: 'Entrega', desc: 'Finalização completa com documentação e suporte pós-obra' }
+            ].map((step, index) => (
+              <div key={index} className="text-center group">
+                <div className="mb-4 flex justify-center">
+                  <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#C9A574] to-[#B8956A] flex items-center justify-center text-3xl font-black text-white shadow-xl group-hover:scale-125 transition-all">
+                    {step.number}
+                  </div>
+                </div>
+                <h3 className="mb-3 text-2xl font-bold text-[#2C3E50]">
+                  {step.title}
+                </h3>
+                <p className="text-gray-600">
+                  {step.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="bg-gradient-to-b from-gray-50 to-white py-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mb-16 text-center">
+            <span className="inline-block px-4 py-2 rounded-full bg-[#C9A574]/10 text-[#C9A574] font-semibold mb-4">
+              DEPOIMENTOS
+            </span>
+            <h2 className="mb-6 text-5xl font-black text-[#2C3E50]">
+              O que nossos clientes dizem
+            </h2>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-3">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="p-8 hover:shadow-2xl transition-all hover:-translate-y-2">
+                <div className="mb-4 flex gap-1">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 fill-[#C9A574] text-[#C9A574]" />
+                  ))}
+                </div>
+                <p className="mb-6 text-gray-700 italic leading-relaxed">
+                  "{testimonial.text}"
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-[#C9A574] to-[#B8956A] flex items-center justify-center text-white font-bold text-lg">
+                    {testimonial.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-bold text-[#2C3E50]">{testimonial.name}</p>
+                    <p className="text-sm text-gray-600">{testimonial.role}</p>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Platform Features */}
+      <section className="bg-white py-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mb-16 text-center">
+            <span className="inline-block px-4 py-2 rounded-full bg-[#C9A574]/10 text-[#C9A574] font-semibold mb-4">
+              PLATAFORMA DIGITAL
+            </span>
+            <h2 className="mb-6 text-5xl font-black text-[#2C3E50]">
+              Tecnologia a Seu Favor
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Sistema completo de gestão e acompanhamento de obras online
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              { icon: Clock, title: 'Acompanhamento em Tempo Real', desc: 'Veja o progresso da sua obra a qualquer momento, de onde estiver' },
+              { icon: FileText, title: 'Documentos Centralizados', desc: 'Todos os documentos organizados e seguros em um só lugar' },
+              { icon: MessageCircle, title: 'Comunicação Direta', desc: 'Chat integrado para falar com a equipe sempre que precisar' },
+              { icon: TrendingUp, title: 'Relatórios Detalhados', desc: 'Métricas, gráficos e análises completas do seu projeto' },
+              { icon: Shield, title: 'Segurança Total', desc: 'Seus dados protegidos com criptografia e backup automático' },
+              { icon: Zap, title: 'Notificações Instantâneas', desc: 'Receba atualizações importantes por email e WhatsApp' }
+            ].map((feature, index) => (
               <div 
                 key={index}
-                className="group flex gap-4 rounded-xl border-2 border-gray-200 bg-white p-6 hover:border-[#C9A574] hover:shadow-xl transition-all"
+                className="group flex gap-4 rounded-2xl bg-gradient-to-br from-gray-50 to-white border-2 border-gray-100 p-6 hover:border-[#C9A574] hover:shadow-xl transition-all"
               >
-                <CheckCircle className="h-7 w-7 flex-shrink-0 text-[#C9A574] group-hover:scale-125 transition-transform" />
+                <div className="flex-shrink-0">
+                  <div className="rounded-xl bg-[#C9A574]/10 p-3 group-hover:bg-[#C9A574] transition-all">
+                    <feature.icon className="h-6 w-6 text-[#C9A574] group-hover:text-white transition-all" />
+                  </div>
+                </div>
                 <div>
-                  <h3 className="mb-2 text-xl font-bold text-[#2C3E50]">
-                    {service.title}
+                  <h3 className="mb-2 font-bold text-[#2C3E50]">
+                    {feature.title}
                   </h3>
-                  <p className="text-gray-600">
-                    {service.description}
+                  <p className="text-sm text-gray-600">
+                    {feature.desc}
                   </p>
                 </div>
               </div>
@@ -320,130 +551,130 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#C9A574] via-[#B8956A] to-[#C9A574] py-24">
+      <section className="relative overflow-hidden bg-gradient-to-r from-[#2C3E50] via-[#34495E] to-[#2C3E50] py-24">
         {/* Animated Background */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==')]" />
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-1/4 h-96 w-96 bg-[#C9A574] rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-0 right-1/4 h-96 w-96 bg-[#C9A574] rounded-full blur-3xl animate-pulse delay-1000" />
         </div>
 
-        <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
-          <h2 className="mb-6 text-5xl font-bold text-white drop-shadow-lg">
-            Pronto para começar seu projeto?
+        <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
+          <h2 className="mb-6 text-5xl font-black text-white">
+            Pronto para começar?
           </h2>
-          <p className="mb-10 text-2xl text-white/95">
-            Entre em contato e transforme suas ideias em realidade
+          <p className="mb-10 text-2xl text-gray-300">
+            Crie sua conta gratuitamente e tenha acesso completo à nossa plataforma
           </p>
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="flex flex-col items-center justify-center gap-6 sm:flex-row">
             <Button
               onClick={() => router.push('/register')}
-              className="w-72 bg-white py-7 text-xl font-semibold text-[#C9A574] shadow-2xl hover:bg-gray-100 hover:scale-105 transition-all"
+              className="w-80 bg-gradient-to-r from-[#C9A574] to-[#E8D5B7] py-8 text-xl font-bold text-[#2C3E50] shadow-2xl hover:scale-110 transition-all"
             >
-              Criar Conta Grátis
+              <Sparkles className="mr-2 h-6 w-6" />
+              Começar Agora
+              <ArrowRight className="ml-2 h-6 w-6" />
             </Button>
             <Button
               onClick={() => router.push('/login')}
-              className="w-72 border-3 border-white bg-transparent py-7 text-xl font-semibold text-white hover:bg-white/20 hover:scale-105 transition-all"
+              className="w-80 border-3 border-white bg-white/10 backdrop-blur-sm py-8 text-xl font-bold text-white hover:bg-white hover:text-[#2C3E50] transition-all hover:scale-110"
             >
-              Já tenho conta
+              Já sou cliente
             </Button>
           </div>
-        </div>
-      </section>
 
-      {/* Testimonials / Trust Section */}
-      <section className="bg-white py-24">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 text-5xl font-bold text-[#2C3E50]">
-              Nossos Diferenciais
-            </h2>
-          </div>
-
-          <div className="grid gap-8 md:grid-cols-3">
-            {[
-              {
-                title: 'Transparência Total',
-                description: 'Acompanhe cada etapa da obra em tempo real através do nosso sistema'
-              },
-              {
-                title: 'Tecnologia Avançada',
-                description: 'Plataforma digital completa para gestão e acompanhamento de projetos'
-              },
-              {
-                title: 'Suporte Personalizado',
-                description: 'Equipe dedicada para atender suas necessidades em qualquer momento'
-              }
-            ].map((item, index) => (
-              <div key={index} className="text-center">
-                <div className="mb-4 flex justify-center">
-                  <div className="rounded-full bg-gradient-to-br from-[#C9A574] to-[#B8956A] p-4">
-                    <CheckCircle className="h-8 w-8 text-white" />
-                  </div>
-                </div>
-                <h3 className="mb-3 text-2xl font-bold text-[#2C3E50]">
-                  {item.title}
-                </h3>
-                <p className="text-gray-600">
-                  {item.description}
-                </p>
-              </div>
-            ))}
+          {/* Trust Badges */}
+          <div className="mt-16 flex flex-wrap justify-center gap-8 text-white/60">
+            <span className="flex items-center gap-2">
+              <Shield className="h-5 w-5" /> Dados 100% Seguros
+            </span>
+            <span className="flex items-center gap-2">
+              <CheckCircle className="h-5 w-5" /> Sem taxas ocultas
+            </span>
+            <span className="flex items-center gap-2">
+              <Clock className="h-5 w-5" /> Suporte 24/7
+            </span>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[#2C3E50] py-16 text-white">
+      {/* Footer Premium */}
+      <footer className="bg-[#1a252f] py-16 text-white">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid gap-12 md:grid-cols-3">
-            <div>
+          <div className="grid gap-12 md:grid-cols-4">
+            {/* Brand */}
+            <div className="md:col-span-2">
               <div className="mb-6 flex items-center gap-3">
-                <Building2 className="h-10 w-10 text-[#C9A574]" />
-                <span className="text-3xl font-bold text-[#C9A574]">GÊMEAS</span>
+                <Building2 className="h-12 w-12 text-[#C9A574]" />
+                <div>
+                  <span className="text-3xl font-black text-white">GÊMEAS</span>
+                  <p className="text-[#C9A574] text-sm">ENGENHARIA</p>
+                </div>
               </div>
-              <p className="text-gray-400 leading-relaxed">
-                Engenharia de excelência com compromisso, qualidade e inovação 
-                para transformar seus projetos em realidade.
+              <p className="mb-6 text-gray-400 leading-relaxed max-w-md">
+                Há mais de 15 anos transformando sonhos em construções sólidas. 
+                Compromisso, qualidade e inovação em cada projeto.
               </p>
+              <div className="flex gap-3">
+                <div className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#C9A574] cursor-pointer transition-all">
+                  📘
+                </div>
+                <div className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#C9A574] cursor-pointer transition-all">
+                  📸
+                </div>
+                <div className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#C9A574] cursor-pointer transition-all">
+                  💼
+                </div>
+              </div>
             </div>
 
+            {/* Quick Links */}
             <div>
-              <h3 className="mb-6 text-xl font-semibold text-[#C9A574]">Nossos Serviços</h3>
-              <ul className="space-y-3 text-gray-400">
-                <li className="hover:text-white transition-colors cursor-pointer">→ Projetos Arquitetônicos</li>
-                <li className="hover:text-white transition-colors cursor-pointer">→ Gestão de Obras</li>
-                <li className="hover:text-white transition-colors cursor-pointer">→ Consultoria Técnica</li>
-                <li className="hover:text-white transition-colors cursor-pointer">→ Regularização</li>
+              <h3 className="mb-6 text-lg font-bold text-[#C9A574]">Navegação</h3>
+              <ul className="space-y-3">
+                {['Projetos', 'Serviços', 'Sobre Nós', 'Contato'].map((link, idx) => (
+                  <li key={idx}>
+                    <a href="#" className="text-gray-400 hover:text-[#C9A574] transition-colors">
+                      {link}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
 
+            {/* Contact */}
             <div>
-              <h3 className="mb-6 text-xl font-semibold text-[#C9A574]">Contato</h3>
-              <ul className="space-y-3 text-gray-400">
-                <li>📧 contato@gemeas.com.br</li>
-                <li>📱 (34) 99999-9999</li>
-                <li>📍 Uberlândia - MG</li>
-                <li>🕐 Seg-Sex: 8h às 18h</li>
+              <h3 className="mb-6 text-lg font-bold text-[#C9A574]">Contato</h3>
+              <ul className="space-y-4 text-gray-400">
+                <li className="flex items-start gap-2">
+                  <Mail className="h-5 w-5 text-[#C9A574] flex-shrink-0 mt-0.5" />
+                  <span>contato@gemeas.com.br</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Phone className="h-5 w-5 text-[#C9A574] flex-shrink-0 mt-0.5" />
+                  <span>(11) 99999-9999</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <MapPin className="h-5 w-5 text-[#C9A574] flex-shrink-0 mt-0.5" />
+                  <span>São Paulo - SP<br/>Segunda a Sexta: 8h às 18h</span>
+                </li>
               </ul>
             </div>
           </div>
 
-          <div className="mt-12 border-t border-gray-700 pt-8">
+          {/* Bottom Bar */}
+          <div className="mt-12 border-t border-gray-800 pt-8">
             <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-              <p className="text-gray-400">
-                &copy; 2025 Gêmeas Engenharia. Todos os direitos reservados.
+              <p className="text-gray-500 text-sm">
+                &copy; 2024 Gêmeas Engenharia. Todos os direitos reservados.
               </p>
-              <div className="flex gap-6">
-                <Button
-                  onClick={() => router.push('/login')}
-                  className="bg-[#C9A574] hover:bg-[#B8956A]"
-                >
-                  Acessar Sistema
-                </Button>
+              <div className="flex gap-6 text-sm text-gray-500">
+                <a href="#" className="hover:text-[#C9A574] transition-colors">Privacidade</a>
+                <a href="#" className="hover:text-[#C9A574] transition-colors">Termos</a>
+                <a href="#" className="hover:text-[#C9A574] transition-colors">Cookies</a>
               </div>
             </div>
           </div>
-      </div>
+        </div>
       </footer>
     </div>
   )
