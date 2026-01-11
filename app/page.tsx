@@ -150,32 +150,63 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {/* Project 1 */}
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {/* Project 1 - AHAVA */}
             <div className="group relative overflow-hidden rounded-lg shadow-lg">
-              <div className="aspect-[4/3] bg-gradient-to-br from-[#C9A574] to-[#B8956A]" />
+              <div className="aspect-[4/3] w-full bg-gradient-to-br from-[#E8D5B7] via-[#C9A574] to-[#B8956A] flex items-center justify-center">
+                <div className="text-center p-6">
+                  <Building2 className="h-16 w-16 mx-auto mb-4 text-white" />
+                  <p className="text-white font-bold text-xl">AHAVA</p>
+                </div>
+              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 transition-opacity group-hover:opacity-100">
                 <div className="absolute bottom-0 p-6 text-white">
-                  <h3 className="text-2xl font-bold">Edifício Comercial</h3>
-                  <p className="mt-2 text-sm">Projeto moderno com design arrojado</p>
+                  <h3 className="text-2xl font-bold">Edifício AHAVA</h3>
+                  <p className="mt-2 text-sm">Projeto comercial moderno</p>
                 </div>
               </div>
             </div>
 
-            {/* Project 2 */}
+            {/* Project 2 - Espaço Revolução */}
             <div className="group relative overflow-hidden rounded-lg shadow-lg">
-              <div className="aspect-[4/3] bg-gradient-to-br from-[#2C3E50] to-[#34495E]" />
+              <div className="aspect-[4/3] w-full bg-gradient-to-br from-[#2C3E50] via-[#34495E] to-[#1a252f] flex items-center justify-center">
+                <div className="text-center p-6">
+                  <Building2 className="h-16 w-16 mx-auto mb-4 text-[#C9A574]" />
+                  <p className="text-[#C9A574] font-bold text-xl">ESPAÇO REVOLUÇÃO</p>
+                </div>
+              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 transition-opacity group-hover:opacity-100">
                 <div className="absolute bottom-0 p-6 text-white">
-                  <h3 className="text-2xl font-bold">Espaço Corporativo</h3>
-                  <p className="mt-2 text-sm">Ambientes funcionais e elegantes</p>
+                  <h3 className="text-2xl font-bold">Espaço Revolução</h3>
+                  <p className="mt-2 text-sm">Centro corporativo inovador</p>
                 </div>
               </div>
             </div>
 
-            {/* Project 3 */}
+            {/* Project 3 - Galeria Comercial */}
             <div className="group relative overflow-hidden rounded-lg shadow-lg">
-              <div className="aspect-[4/3] bg-gradient-to-br from-[#C9A574] to-[#2C3E50]" />
+              <div className="aspect-[4/3] w-full bg-gradient-to-br from-[#C9A574] via-[#B8956A] to-[#2C3E50] flex items-center justify-center">
+                <div className="text-center p-6">
+                  <Building2 className="h-16 w-16 mx-auto mb-4 text-white" />
+                  <p className="text-white font-bold text-xl">GALERIA</p>
+                </div>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="absolute bottom-0 p-6 text-white">
+                  <h3 className="text-2xl font-bold">Galeria Comercial</h3>
+                  <p className="mt-2 text-sm">Espaços comerciais modernos</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Project 4 - Residência Moderna */}
+            <div className="group relative overflow-hidden rounded-lg shadow-lg">
+              <div className="aspect-[4/3] w-full bg-gradient-to-br from-[#B8956A] via-[#C9A574] to-[#E8D5B7] flex items-center justify-center">
+                <div className="text-center p-6">
+                  <Building2 className="h-16 w-16 mx-auto mb-4 text-[#2C3E50]" />
+                  <p className="text-[#2C3E50] font-bold text-xl">RESIDENCIAL</p>
+                </div>
+              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 transition-opacity group-hover:opacity-100">
                 <div className="absolute bottom-0 p-6 text-white">
                   <h3 className="text-2xl font-bold">Residência de Luxo</h3>
