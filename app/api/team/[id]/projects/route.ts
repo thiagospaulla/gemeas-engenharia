@@ -5,9 +5,10 @@ import { getUserFromToken } from '@/lib/auth'
 // POST /api/team/[id]/projects - Atribuir membro a um projeto
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     if (!token) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
@@ -30,7 +31,7 @@ export async function POST(
 
     // Verificar se o membro existe
     const teamMember = await prisma.teamMember.findUnique({
-      where: { id: params.id }
+      where: { id: id }
     })
 
     if (!teamMember) {
@@ -56,7 +57,7 @@ export async function POST(
     const existingAssignment = await prisma.projectTeamMember.findFirst({
       where: {
         projectId: body.projectId,
-        teamMemberId: params.id,
+        teamMemberId: id,
         endDate: null
       }
     })
@@ -71,7 +72,7 @@ export async function POST(
     const assignment = await prisma.projectTeamMember.create({
       data: {
         projectId: body.projectId,
-        teamMemberId: params.id,
+        teamMemberId: id,
         startDate: new Date(body.startDate),
         endDate: body.endDate ? new Date(body.endDate) : null,
         role: body.role,
@@ -96,9 +97,10 @@ export async function POST(
 // GET /api/team/[id]/projects - Listar projetos do membro
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     if (!token) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
@@ -111,7 +113,7 @@ export async function GET(
 
     const assignments = await prisma.projectTeamMember.findMany({
       where: {
-        teamMemberId: params.id
+        teamMemberId: id
       },
       include: {
         project: {

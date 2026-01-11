@@ -219,7 +219,7 @@ export default function AdminAppointmentsPage() {
                         <Badge className={getStatusColor(appointment.status)}>
                           {getStatusLabel(appointment.status)}
                         </Badge>
-                        <Badge variant="outline">{appointment.type}</Badge>
+                        <Badge>{appointment.type}</Badge>
                       </div>
                       <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-gray-600">
                         <span className="flex items-center gap-1">

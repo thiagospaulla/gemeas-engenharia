@@ -5,9 +5,10 @@ import { getUserFromToken } from '@/lib/auth'
 // GET /api/team/[id] - Buscar membro específico
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     if (!token) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
@@ -19,7 +20,7 @@ export async function GET(
     }
 
     const teamMember = await prisma.teamMember.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         projectAssignments: {
           include: {
@@ -62,9 +63,10 @@ export async function GET(
 // PUT /api/team/[id] - Atualizar membro
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     if (!token) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
@@ -79,7 +81,7 @@ export async function PUT(
 
     // Verificar se o membro existe
     const existingMember = await prisma.teamMember.findUnique({
-      where: { id: params.id }
+      where: { id: id }
     })
 
     if (!existingMember) {
@@ -143,7 +145,7 @@ export async function PUT(
     if (body.active !== undefined) updateData.active = body.active
 
     const teamMember = await prisma.teamMember.update({
-      where: { id: params.id },
+      where: { id: id },
       data: updateData,
       include: {
         projectAssignments: {
@@ -167,9 +169,10 @@ export async function PUT(
 // DELETE /api/team/[id] - Deletar membro
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     if (!token) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
@@ -182,7 +185,7 @@ export async function DELETE(
 
     // Verificar se o membro existe
     const existingMember = await prisma.teamMember.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         projectAssignments: true
       }
@@ -210,7 +213,7 @@ export async function DELETE(
     }
 
     await prisma.teamMember.delete({
-      where: { id: params.id }
+      where: { id: id }
     })
 
     return NextResponse.json({ message: 'Membro excluído com sucesso' })

@@ -5,9 +5,10 @@ import { getUserFromToken } from '@/lib/auth'
 // PUT /api/users/[id]/activate - Aprovar/Ativar usuário
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     if (!token) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
@@ -23,7 +24,7 @@ export async function PUT(
 
     // Verificar se o usuário existe
     const targetUser = await prisma.user.findUnique({
-      where: { id: params.id }
+      where: { id: id }
     })
 
     if (!targetUser) {
@@ -32,7 +33,7 @@ export async function PUT(
 
     // Atualizar status de ativação
     const updatedUser = await prisma.user.update({
-      where: { id: params.id },
+      where: { id: id },
       data: { active },
       select: {
         id: true,

@@ -288,12 +288,12 @@ export default function WorkDiariesPage() {
                           {formatDate(diary.date)}
                         </h3>
                         {diary.weather && (
-                          <Badge variant="outline">
+                          <Badge>
                             {getWeatherIcon(diary.weather)} {diary.weather}
                           </Badge>
                         )}
                         {diary.temperature && (
-                          <Badge variant="outline">
+                          <Badge>
                             🌡️ {diary.temperature}°C
                           </Badge>
                         )}

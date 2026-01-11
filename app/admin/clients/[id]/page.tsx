@@ -124,7 +124,7 @@ export default function ViewClientPage({ params }: { params: Promise<{ id: strin
                     Administrador
                   </Badge>
                 ) : (
-                  <Badge variant="outline">Cliente</Badge>
+                  <Badge>Cliente</Badge>
                 )}
                 {client.active ? (
                   <Badge className="bg-green-100 text-green-800">

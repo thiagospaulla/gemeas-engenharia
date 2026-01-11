@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 import Header from '@/components/Header'
@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ArrowLeft, Save, Loader2, Cloud, Thermometer, Users, Wrench, Package, MessageSquare, Image as ImageIcon, Plus, X } from 'lucide-react'
 
-export default function NewWorkDiaryPage() {
+function NewWorkDiaryForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const preSelectedProject = searchParams.get('project')
@@ -487,5 +487,20 @@ export default function NewWorkDiaryPage() {
         </main>
       </div>
     </div>
+  )
+}
+
+export default function NewWorkDiaryPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-[#C9A574]"></div>
+          <p className="mt-4 text-gray-600">Carregando...</p>
+        </div>
+      </div>
+    }>
+      <NewWorkDiaryForm />
+    </Suspense>
   )
 }

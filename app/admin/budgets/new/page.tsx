@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 import Header from '@/components/Header'
@@ -19,7 +19,7 @@ interface BudgetItem {
   category: string
 }
 
-export default function NewBudgetPage() {
+function NewBudgetForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const preSelectedClient = searchParams.get('client')
@@ -591,5 +591,20 @@ export default function NewBudgetPage() {
         </main>
       </div>
     </div>
+  )
+}
+
+export default function NewBudgetPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-[#C9A574]"></div>
+          <p className="mt-4 text-gray-600">Carregando...</p>
+        </div>
+      </div>
+    }>
+      <NewBudgetForm />
+    </Suspense>
   )
 }

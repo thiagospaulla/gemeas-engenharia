@@ -308,7 +308,7 @@ export default function ClientViewBudgetPage({ params }: { params: Promise<{ id:
                   </CardHeader>
                   <CardContent>
                     <p className="font-semibold mb-2">{budget.project.title}</p>
-                    <Badge variant="outline">{budget.project.status}</Badge>
+                    <Badge>{budget.project.status}</Badge>
                     <Button 
                       variant="outline" 
                       size="sm" 

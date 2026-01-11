@@ -5,16 +5,17 @@ import { requireAuth } from '@/lib/middleware'
 // Obter fatura específica
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const authResult = await requireAuth(request)
     if (authResult instanceof NextResponse) {
       return authResult
     }
 
     const invoice = await prisma.invoice.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         client: {
           select: {
@@ -65,9 +66,10 @@ export async function GET(
 // Atualizar fatura
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const authResult = await requireAuth(request)
     if (authResult instanceof NextResponse) {
       return authResult
@@ -84,7 +86,7 @@ export async function PATCH(
     const data = await request.json()
 
     const invoice = await prisma.invoice.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         description: data.description,
         amount: data.amount,
@@ -131,9 +133,10 @@ export async function PATCH(
 // Deletar fatura
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const authResult = await requireAuth(request)
     if (authResult instanceof NextResponse) {
       return authResult
@@ -147,7 +150,7 @@ export async function DELETE(
     }
 
     await prisma.invoice.delete({
-      where: { id: params.id }
+      where: { id: id }
     })
 
     return NextResponse.json({ message: 'Fatura deletada com sucesso' })

@@ -350,7 +350,7 @@ export default function ViewAppointmentPage({ params }: { params: Promise<{ id: 
                   </CardHeader>
                   <CardContent>
                     <p className="font-semibold mb-2">{appointment.project.title}</p>
-                    <Badge variant="outline">{appointment.project.status}</Badge>
+                    <Badge>{appointment.project.status}</Badge>
                     <Button 
                       variant="outline" 
                       size="sm" 

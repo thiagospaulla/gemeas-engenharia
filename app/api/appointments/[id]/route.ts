@@ -5,16 +5,17 @@ import { requireAuth } from '@/lib/middleware'
 // Obter agendamento específico
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const authResult = await requireAuth(request)
     if (authResult instanceof NextResponse) {
       return authResult
     }
 
     const appointment = await prisma.appointment.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         client: {
           select: {
@@ -63,9 +64,10 @@ export async function GET(
 // Atualizar agendamento
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const authResult = await requireAuth(request)
     if (authResult instanceof NextResponse) {
       return authResult
@@ -74,7 +76,7 @@ export async function PATCH(
     const data = await request.json()
 
     const existingAppointment = await prisma.appointment.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!existingAppointment) {
@@ -96,7 +98,7 @@ export async function PATCH(
     }
 
     const appointment = await prisma.appointment.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         title: data.title,
         description: data.description,
@@ -157,16 +159,17 @@ export async function PATCH(
 // Deletar agendamento
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const authResult = await requireAuth(request)
     if (authResult instanceof NextResponse) {
       return authResult
     }
 
     const appointment = await prisma.appointment.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!appointment) {
@@ -188,7 +191,7 @@ export async function DELETE(
     }
 
     await prisma.appointment.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
     return NextResponse.json({ message: 'Agendamento deletado com sucesso' })

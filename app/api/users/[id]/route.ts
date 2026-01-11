@@ -5,16 +5,17 @@ import { requireAdmin } from '@/lib/middleware'
 // Atualizar usuário (aprovar, promover a admin, editar dados)
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const authResult = await requireAdmin(request)
     if (authResult instanceof NextResponse) {
       return authResult
     }
 
     const data = await request.json()
-    const userId = params.id
+    const userId = id
 
     const user = await prisma.user.findUnique({
       where: { id: userId }
@@ -93,15 +94,16 @@ export async function PATCH(
 // Deletar usuário
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const authResult = await requireAdmin(request)
     if (authResult instanceof NextResponse) {
       return authResult
     }
 
-    const userId = params.id
+    const userId = id
 
     await prisma.user.delete({
       where: { id: userId }
@@ -120,15 +122,16 @@ export async function DELETE(
 // Obter usuário específico
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const authResult = await requireAdmin(request)
     if (authResult instanceof NextResponse) {
       return authResult
     }
 
-    const userId = params.id
+    const userId = id
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -149,7 +152,8 @@ export async function GET(
         _count: {
           select: {
             projects: true,
-            documents: true,
+            userDocuments: true,
+            uploadedDocuments: true,
             budgets: true,
             invoices: true,
             appointments: true

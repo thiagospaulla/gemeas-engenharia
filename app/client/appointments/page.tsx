@@ -120,7 +120,7 @@ export default function ClientAppointmentsPage() {
                             <Badge className={getStatusColor(appointment.status)}>
                               {appointment.status}
                             </Badge>
-                            <Badge variant="outline">{appointment.type}</Badge>
+                            <Badge>{appointment.type}</Badge>
                           </div>
 
                           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-3">

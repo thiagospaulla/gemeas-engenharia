@@ -18,6 +18,7 @@ import {
   Wrench,
   MessageSquare,
   Image as ImageIcon,
+  Eye,
   FolderKanban,
   Sparkles
 } from 'lucide-react'
@@ -288,7 +289,7 @@ export default function ViewWorkDiaryPage({ params }: { params: Promise<{ id: st
                   </CardHeader>
                   <CardContent>
                     <p className="font-semibold mb-2">{diary.project.title}</p>
-                    <Badge variant="outline">{diary.project.status}</Badge>
+                    <Badge>{diary.project.status}</Badge>
                     <Button 
                       variant="outline" 
                       size="sm" 

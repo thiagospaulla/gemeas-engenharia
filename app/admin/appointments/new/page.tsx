@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 import Header from '@/components/Header'
@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ArrowLeft, Save, Loader2, Calendar as CalendarIcon, Clock, MapPin, Mail, Phone } from 'lucide-react'
 
-export default function NewAppointmentPage() {
+function NewAppointmentForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const preSelectedClient = searchParams.get('client')
@@ -550,4 +550,19 @@ function calculateDuration(start: string, end: string): string {
   const mins = diffMins % 60
   
   return mins > 0 ? `${hours}h ${mins}min` : `${hours} hora${hours > 1 ? 's' : ''}`
+}
+
+export default function NewAppointmentPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-[#C9A574]"></div>
+          <p className="mt-4 text-gray-600">Carregando...</p>
+        </div>
+      </div>
+    }>
+      <NewAppointmentForm />
+    </Suspense>
+  )
 }

@@ -5,9 +5,10 @@ import { getUserFromToken } from '@/lib/auth'
 // GET /api/documents/[id] - Buscar documento específico
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     if (!token) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
@@ -19,7 +20,7 @@ export async function GET(
     }
 
     const document = await prisma.document.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         uploadedBy: {
           select: {
@@ -89,9 +90,10 @@ export async function GET(
 // PUT /api/documents/[id] - Atualizar documento
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     if (!token) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
@@ -103,7 +105,7 @@ export async function PUT(
     }
 
     const document = await prisma.document.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         project: true
       }
@@ -121,7 +123,7 @@ export async function PUT(
     const data = await request.json()
 
     const updatedDocument = await prisma.document.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         title: data.title,
         description: data.description,
@@ -158,9 +160,10 @@ export async function PUT(
 // DELETE /api/documents/[id] - Deletar documento
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     if (!token) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
@@ -172,7 +175,7 @@ export async function DELETE(
     }
 
     const document = await prisma.document.findUnique({
-      where: { id: params.id }
+      where: { id: id }
     })
 
     if (!document) {
@@ -185,7 +188,7 @@ export async function DELETE(
     }
 
     await prisma.document.delete({
-      where: { id: params.id }
+      where: { id: id }
     })
 
     return NextResponse.json({ message: 'Documento excluído com sucesso' })

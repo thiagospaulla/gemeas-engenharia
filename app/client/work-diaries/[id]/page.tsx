@@ -270,7 +270,7 @@ export default function ClientViewWorkDiaryPage({ params }: { params: Promise<{ 
                   </CardHeader>
                   <CardContent>
                     <p className="font-semibold mb-2">{diary.project.title}</p>
-                    <Badge variant="outline">{diary.project.status}</Badge>
+                    <Badge>{diary.project.status}</Badge>
                     <Button 
                       variant="outline" 
                       size="sm" 

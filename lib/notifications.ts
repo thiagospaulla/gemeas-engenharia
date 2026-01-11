@@ -127,7 +127,7 @@ export async function sendEmail(data: NotificationData): Promise<boolean> {
 
 // ==================== TEMPLATES ====================
 
-export function getAppointmentWhatsAppMessage(appointment: any, type: 'confirmation' | 'reminder' | 'cancellation'): string {
+export function getAppointmentWhatsAppMessage(appointment: any, type: 'confirmation' | 'reminder' | 'cancellation' | 'update'): string {
   const dateFormatted = new Date(appointment.startTime).toLocaleDateString('pt-BR', {
     day: '2-digit',
     month: 'long',
@@ -194,6 +194,25 @@ Informamos que o seguinte agendamento foi cancelado:
 📋 *Tipo:* ${appointment.type}
 
 Entre em contato para reagendar.
+
+Atenciosamente,
+Equipe Gêmeas Engenharia`
+
+    case 'update':
+      return `🏗️ *GÊMEAS ENGENHARIA*
+
+🔄 *Agendamento Atualizado*
+
+Olá, ${appointment.client?.name}!
+
+Informamos que seu agendamento foi atualizado:
+
+📅 *Data:* ${dateFormatted}
+⏰ *Horário:* ${timeFormatted}
+📋 *Tipo:* ${appointment.type}
+📍 *Local:* ${appointment.location || 'A definir'}
+
+Qualquer dúvida, entre em contato.
 
 Atenciosamente,
 Equipe Gêmeas Engenharia`
@@ -454,4 +473,4 @@ export async function sendAppointmentReminders() {
 
 // ==================== EXPORT ====================
 
-export { NotificationData }
+export type { NotificationData }
